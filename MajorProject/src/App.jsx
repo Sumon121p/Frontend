@@ -5,6 +5,8 @@ import Footer from "./Footer";
 import Index from "./Index";
 import ListOne from "./ListOne";
 import AddNewList from "./AddNewList";
+import Show from "./Show";
+import Demo from "./Demo";
 function App() {
   return (
     <Routes>
@@ -13,6 +15,8 @@ function App() {
       <Route path="/footer" element={<Footer />} />
       <Route path="/list/:id" element={<ListOne />} />
       <Route path="/add" element={<AddNewList />} />
+      <Route path="show" element={<Show/>}/>
+      <Route path="/demo" element={<Demo/>}/>
     </Routes>
   );
 }
