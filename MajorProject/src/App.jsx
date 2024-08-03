@@ -15,7 +15,7 @@ function App() {
       <Route path="/footer" element={<Footer />} />
       <Route path="/list/:id" element={<ListOne />} />
       <Route path="/add" element={<AddNewList />} />
-      <Route path="show" element={<Show/>}/>
+      <Route path="/show/:id" element={<Show/>}/>
       <Route path="/demo" element={<Demo/>}/>
     </Routes>
   );

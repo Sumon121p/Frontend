@@ -25,7 +25,7 @@ export default function Index() {
         <h3>All Listings</h3>
         <div className="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1">
           {data.map((el) => (
-            <Link to={`/list/${el._id}`} className="listing-link">
+            <Link to={`/show/${el._id}`} className="listing-link">
               <div className="card col">
                 <img
                   src={el.image}
