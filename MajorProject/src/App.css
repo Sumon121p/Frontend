@@ -38,7 +38,7 @@
 }
 
 /* Cards */
-.card{
+.card-listing{
     border: none;
     margin-bottom: 2rem;
 }
@@ -47,13 +47,13 @@
     width: 100% !important;
     object-fit: cover !important;
 }
-.card-body{
+/* .card-body{
     padding: 0 !important;
-}
+} */
 .card-text p{
     font-weight: 400 !important;
 }
-.row{
+.row-add{
     display: flex;
     justify-content: space-around;
 }
