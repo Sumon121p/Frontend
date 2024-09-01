@@ -4,6 +4,9 @@ import "./App.css";
 import { useState } from "react";
 import { addList } from "./Api";
 import { useNavigate } from "react-router-dom";
+import React from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 export default function AddNewList() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -25,15 +28,16 @@ export default function AddNewList() {
     };
     try {
       const res = await addList(payload);
+      toast.success("Updated Sucessfuly");
       navigate("/");
     } catch (err) {
-      console.log(err);
+      toast.warn(err.response.data.err);
     }
   };
   return (
     <>
       <Navbar />
-      <div className="row">
+      <div className="row row-add">
         <div className="col-8">
           <div className="container">
             <h3>Create a New Listing</h3>
@@ -147,6 +151,7 @@ export default function AddNewList() {
             </form>
           </div>
         </div>
+        <ToastContainer/>
       </div>
       <Footer />
     </>

@@ -3,6 +3,9 @@ import { getbyidList, updateList } from "./Api";
 import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import React from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 export default function ListOne() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -25,9 +28,10 @@ export default function ListOne() {
     };
     try {
       const res = await updateList(id, payload);
+      toast.success("Updated Sucessfuly");
       navigate("/");
     } catch (err) {
-      console.log(err);
+      toast.warn(err.response.data.err);
     }
   }
   async function view() {
@@ -50,7 +54,7 @@ export default function ListOne() {
   return (
     <>
       <Navbar />
-      <div className="row">
+      <div className="row-add">
         <div className="col-8">
           <div className="container">
             <h3>Update Listing</h3>
@@ -92,7 +96,7 @@ export default function ListOne() {
                       Price
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       className="form-control"
                       id="price"
                       placeholder="enter price"
@@ -157,6 +161,7 @@ export default function ListOne() {
             </form>
           </div>
         </div>
+        <ToastContainer />
       </div>
       <Footer />
     </>
