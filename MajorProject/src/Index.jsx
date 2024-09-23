@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { getallList } from "./Api";
+import { getallList, isLogin } from "./Api";
 import "./App.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export default function Index() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   async function allList() {
     try {
@@ -15,8 +16,25 @@ export default function Index() {
     }
   }
 
+  //loged in check
+
+  const [Authorized, setAuthorized] = useState(false);
+  const isAuthorized = async () => {
+    try {
+      const res = await isLogin();
+      if (res) {
+        setAuthorized(true);
+      }
+    } catch (err) {
+      if (err) {
+        setAuthorized(false);
+      }
+    }
+  };
+
   useEffect(() => {
     allList();
+    isAuthorized();
   }, []);
   return (
     <>
@@ -25,7 +43,7 @@ export default function Index() {
         <h3>All Listings</h3>
         <div className="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1">
           {data.map((el) => (
-            <Link to={`/show/${el._id}`} className="listing-link">
+            <Link to={Authorized ? `/show/${el._id}` : `/login`} className="listing-link">
               <div className="card col card-listing">
                 <img
                   src={el.image}

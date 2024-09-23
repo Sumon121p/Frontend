@@ -6,7 +6,7 @@ import { addList } from "./Api";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 export default function AddNewList() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -32,6 +32,11 @@ export default function AddNewList() {
       navigate("/");
     } catch (err) {
       toast.warn(err.response.data.err);
+      if (err.response.data.err == "you must be loged in") {
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      }
     }
   };
   return (
@@ -151,7 +156,7 @@ export default function AddNewList() {
             </form>
           </div>
         </div>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
       <Footer />
     </>
