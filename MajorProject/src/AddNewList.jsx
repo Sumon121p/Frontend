@@ -18,27 +18,28 @@ export default function AddNewList() {
 
   const add = async (e) => {
     e.preventDefault();
-    const payload = {
-      title,
-      image: imgLink,
-      price,
-      country,
-      location,
-      description,
-    };
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("image", imgLink);
+    formData.append("price", price);
+    formData.append("country", country);
+    formData.append("location", location);
+    formData.append("description", description);
+
     try {
-      const res = await addList(payload);
-      toast.success("Updated Sucessfuly");
+      const res = await addList(formData);
+      toast.success("Updated Successfully");
       navigate("/");
     } catch (err) {
       toast.warn(err.response.data.err);
-      if (err.response.data.err == "you must be loged in") {
+      if (err.response.data.err === "you must be logged in") {
         setTimeout(() => {
           navigate("/login");
         }, 1000);
       }
     }
   };
+
   return (
     <>
       <Navbar />
@@ -64,7 +65,7 @@ export default function AddNewList() {
                   />
                 </div>
 
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label htmlFor="img-link" className="form-label">
                     Image Link
                   </label>
@@ -74,6 +75,21 @@ export default function AddNewList() {
                     id="img-link"
                     name="image"
                     placeholder="enter image URL/Link"
+                    onChange={(e) => setImgLink(e.target.value)}
+                    value={imgLink}
+                    required
+                  />
+                </div> */}
+
+                <div className="mb-3">
+                  <label htmlFor="img-link" className="form-label">
+                    Upload listing image
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="img-link"
+                    name="image"
                     onChange={(e) => setImgLink(e.target.value)}
                     value={imgLink}
                     required

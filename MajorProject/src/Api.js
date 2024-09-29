@@ -15,6 +15,18 @@ export const isLogin = async () => {
     return await api2.get("/");
 }
 
+export const signup = async (data) => {
+    return await api2.post('/signup', data);
+}
+
+export const login = async (data) => {
+    return await api2.post('/login', data);
+}
+
+export const logout = async () => {
+    return await api2.get('/logout');
+}
+
 export const getallList = async () => {
     return await api.get("/");
 }
@@ -41,16 +53,4 @@ export const giveReview = async (id, data) => {
 
 export const deleteReview = async (listId, reviewId) => {
     return await api.delete(`/${listId}/review/${reviewId}`);
-}
-
-export const signup = async (data) => {
-    return await api.post('/signup', data);
-}
-
-export const login = async (data) => {
-    return await api.post('/login', data);
-}
-
-export const logout = async () => {
-    return await api.get('/logout');
 }
