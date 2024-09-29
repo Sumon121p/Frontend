@@ -19,7 +19,7 @@ export default function Signup() {
     };
     try {
       const res = await signup(payload);
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       toast.warn(err.response.data.err);
     }

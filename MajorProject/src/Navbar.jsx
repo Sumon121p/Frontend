@@ -28,7 +28,7 @@ export default function Navbar() {
         navigate("/login");
       }, 2000);
     }catch(err){
-      console.log(err);
+      toast.error(err.response?.data?.err);
     }
   }
 

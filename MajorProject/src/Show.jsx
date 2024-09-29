@@ -1,8 +1,15 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import "./Rating.css";
 import { useEffect, useState } from "react";
-import { deleteList, deleteReview, getbyidList, giveReview } from "./Api";
+import {
+  deleteList,
+  deleteReview,
+  getbyidList,
+  giveReview,
+  isLogin,
+} from "./Api";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Show() {
@@ -15,7 +22,6 @@ export default function Show() {
   async function view() {
     try {
       const res = await getbyidList(id);
-      console.log(res.data);
       setData(res.data);
     } catch (err) {
       console.log(err);
@@ -47,17 +53,28 @@ export default function Show() {
   }
 
   async function delReview(reviewId) {
-    try{
+    try {
       const res = await deleteReview(id, reviewId);
       toast.success("Reveiw Deleted Done");
       view();
-    }catch(err){
+    } catch (err) {
       toast.warn(err.response?.data.err);
     }
   }
 
+  const [Authorized, setAuthorized] = useState("");
+  const isAuthorized = async () => {
+    try {
+      const res = await isLogin();
+      setAuthorized(res.data);
+    } catch (err) {
+      toast(err);
+    }
+  };
+
   useEffect(() => {
     view();
+    isAuthorized();
   }, [id]);
   return (
     <div>
@@ -77,23 +94,30 @@ export default function Show() {
                   borderRadius: "1rem",
                 }}
               />
-              <div className="card-text">{data.country}</div>
+              <div className="card-text pb-1">
+                Owend by <i>{data.owner?.username}</i>
+              </div>
+              <div className="card-text pb-1">{data.country}</div>
               <div>
-                <p className="card-text">
+                <p className="card-text pb-1">
                   &#8377; {data.price} / night <br />
                   <p>{data.location}</p> <br />
                   <p>{data.description}</p>
                 </p>
               </div>
             </div>
-            <div>
-              <Link className="btn btn-danger" to={`/list/${id}`}>
-                Edit
-              </Link>
-              <button className="btn m-2 btn-dark" onClick={DeleteList}>
-                Delete
-              </button>
-            </div>
+            {Authorized._id === data.owner?._id ? (
+              <div>
+                <Link className="btn btn-danger" to={`/list/${id}`}>
+                  Edit
+                </Link>
+                <button className="btn m-2 btn-dark" onClick={DeleteList}>
+                  Delete
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
             <hr />
           </div>
           <div className="mb-3 me-5">
@@ -109,6 +133,38 @@ export default function Show() {
                 onChange={(e) => setRating(e.target.value)}
               />
             </div>
+            {/* <fieldset class="starability-slot">
+              <input
+                type="radio"
+                id="no-rate"
+                class="input-no-rate"
+                name="rating"
+                value="0"
+                checked
+                aria-label="No rating."
+              />
+              <input type="radio" id="second-rate1" name="rating" value="1" />
+              <label for="second-rate1" title="Terrible">
+                1 star
+              </label>
+              <input type="radio" id="second-rate2" name="rating" value="2" />
+              <label for="second-rate2" title="Not good">
+                2 stars
+              </label>
+              <input type="radio" id="second-rate3" name="rating" value="3" />
+              <label for="second-rate3" title="Average">
+                3 stars
+              </label>
+              <input type="radio" id="second-rate4" name="rating" value="4" />
+              <label for="second-rate4" title="Very good">
+                4 stars
+              </label>
+              <input type="radio" id="second-rate5" name="rating" value="5" />
+              <label for="second-rate5" title="Amazing">
+                5 stars
+              </label>
+            </fieldset> */}
+
             <div className="mb-3 mt-3">
               <label className="form-label">Comment</label>
               <textarea
@@ -133,11 +189,23 @@ export default function Show() {
                 <div className="col-6 mb-3">
                   <div className="card">
                     <h5 className="card-header">
-                      Sumon Porel ({el?.rating} &#9733;)
+                      {el.owner.username}
+                      <p class="starability-result" data-rating={el?.rating}>
+                        Rated: 3 stars
+                      </p>
                     </h5>
                     <div className="card-body">
                       <p className="card-text">{el?.Comment}</p>
-                      <button className="btn btn-outline-danger" onClick={()=>delReview(el._id)}>Delete</button>
+                      {Authorized._id === el.owner._id ? (
+                        <button
+                          className="btn btn-outline-danger"
+                          onClick={() => delReview(el._id)}
+                        >
+                          Delete
+                        </button>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 </div>
