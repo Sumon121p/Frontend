@@ -85,7 +85,7 @@ export default function Show() {
             <h1>{data.title}</h1>
             <div>
               <img
-                src={data.image}
+                src={data.image?.url}
                 alt=""
                 className="img-fluid"
                 style={{

@@ -12,6 +12,7 @@ export default function Signup() {
 
   const register = async (e) => {
     e.preventDefault();
+    toast.loading("account creating....");
     const payload = {
       email,
       password,
@@ -19,8 +20,13 @@ export default function Signup() {
     };
     try {
       const res = await signup(payload);
-      navigate("/");
+      toast.dismiss();
+      toast.success("Welcome");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
+      toast.dismiss();
       toast.warn(err.response.data.err);
     }
   };
@@ -30,7 +36,7 @@ export default function Signup() {
       <div className="row-add">
         <div className="col-4">
           <div className="container">
-          <div className="m-3">
+            <div className="m-3">
               <h1>Sign Up</h1>
             </div>
             <form onSubmit={register}>

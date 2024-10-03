@@ -43,10 +43,13 @@ export default function Index() {
         <h3>All Listings</h3>
         <div className="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1">
           {data.map((el) => (
-            <Link to={Authorized ? `/show/${el._id}` : `/login`} className="listing-link">
+            <Link
+              to={Authorized ? `/show/${el._id}` : `/login`}
+              className="listing-link"
+            >
               <div className="card col card-listing">
                 <img
-                  src={el.image}
+                  src={el.image.url}
                   className="card-img-top card-img"
                   alt="..."
                   style={{ height: "20rem" }}
