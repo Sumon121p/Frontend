@@ -5,12 +5,13 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 export default function ListOne() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [imgLink, setImgLink] = useState("");
+  const [imgLink, setImgLink] = useState(null);
+  const [updateImg, setUpdateImg] = useState(null);
   const [price, setPrice] = useState("");
   const [country, setCountry] = useState("");
   const [location, setLocation] = useState("");
@@ -18,20 +19,31 @@ export default function ListOne() {
 
   async function update(e) {
     e.preventDefault();
-    const payload = {
-      title,
-      image: imgLink,
-      price,
-      country,
-      location,
-      description,
-    };
+    const formData = new FormData();
+    formData.append("title", title);
+    if (imgLink) {
+      formData.append("image", imgLink);
+    }
+    formData.append("price", price);
+    formData.append("country", country);
+    formData.append("location", location);
+    formData.append("description", description);
+    toast.loading("Updating...");
     try {
-      const res = await updateList(id, payload);
+      const res = await updateList(id, formData);
+      toast.dismiss();
       toast.success("Updated Sucessfuly");
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
-      toast.warn(err.response.data.err);
+      if (err.response.data.err) {
+        toast.dismiss();
+        toast.warn(err.response.data.err);
+      } else {
+        toast.dismiss();
+        toast.warn("Network issues");
+      }
     }
   }
   async function view() {
@@ -39,7 +51,7 @@ export default function ListOne() {
       const res = await getbyidList(id);
       console.log(res.data);
       setTitle(res.data.title);
-      setImgLink(res.data.image);
+      setUpdateImg(res.data.image.url);
       setPrice(res.data.price);
       setCountry(res.data.country);
       setLocation(res.data.location);
@@ -80,14 +92,13 @@ export default function ListOne() {
                     Image Link
                   </label>
                   <input
-                    type="text"
+                    type="file"
                     className="form-control"
                     id="img-link"
                     placeholder="enter image URL/Link"
-                    onChange={(e) => setImgLink(e.target.value)}
-                    value={imgLink}
-                    required
+                    onChange={(e) => setImgLink(e.target.files[0])}
                   />
+                  <a href={updateImg}>View</a>
                 </div>
 
                 <div className="row">

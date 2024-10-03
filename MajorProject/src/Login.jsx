@@ -15,17 +15,22 @@ export default function Login() {
       password,
       username: userName,
     };
+    toast.loading("Login pending....");
     try {
       const res = await login(payload);
+      toast.dismiss();
       toast.success("Log in Sucessful");
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
+      toast.dismiss();
       toast.warn(err.response.data);
     }
   };
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <div className="row-add">
         <div className="col-4">
           <div className="container">

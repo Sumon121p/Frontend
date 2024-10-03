@@ -20,17 +20,20 @@ export default function Navbar() {
     }
   };
 
-  const unauthorized = async() => {
-    try{
+  const unauthorized = async () => {
+    toast.loading("pending...");
+    try {
       const res = await logout();
+      toast.dismiss();
       toast.success("Log out success");
       setTimeout(() => {
         navigate("/login");
-      }, 2000);
-    }catch(err){
+      }, 1000);
+    } catch (err) {
+      toast.dismiss();
       toast.error(err.response?.data?.err);
     }
-  }
+  };
 
   useEffect(() => {
     isAuthorized();
@@ -79,7 +82,11 @@ export default function Navbar() {
             <ul className="navbar-nav ms-auto">
               {Authorized ? (
                 <li className="nav-item">
-                  <p className="nav-link" onClick={unauthorized} style={{cursor: "pointer"}}>
+                  <p
+                    className="nav-link"
+                    onClick={unauthorized}
+                    style={{ cursor: "pointer" }}
+                  >
                     Log out
                   </p>
                 </li>
@@ -101,7 +108,7 @@ export default function Navbar() {
             </ul>
           </div>
         </div>
-        <ToastContainer/>
+        <ToastContainer />
       </nav>
     </>
   );

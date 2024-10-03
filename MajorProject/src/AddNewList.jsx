@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function AddNewList() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [imgLink, setImgLink] = useState("");
+  const [imgLink, setImgLink] = useState(null);
   const [price, setPrice] = useState("");
   const [country, setCountry] = useState("");
   const [location, setLocation] = useState("");
@@ -25,17 +25,26 @@ export default function AddNewList() {
     formData.append("country", country);
     formData.append("location", location);
     formData.append("description", description);
-
+    toast.loading("Processing....");
     try {
       const res = await addList(formData);
+      toast.dismiss();
       toast.success("Updated Successfully");
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
-      toast.warn(err.response.data.err);
-      if (err.response.data.err === "you must be logged in") {
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
+      if (err.response.data.err) {
+        toast.dismiss();
+        toast.warn(err.response.data.err);
+        if (err.response.data.err === "you must be logged in") {
+          setTimeout(() => {
+            navigate("/login");
+          }, 1000);
+        }
+      } else {
+        toast.dismiss();
+        toast.warn("Network issues");
       }
     }
   };
@@ -90,8 +99,7 @@ export default function AddNewList() {
                     className="form-control"
                     id="img-link"
                     name="image"
-                    onChange={(e) => setImgLink(e.target.value)}
-                    value={imgLink}
+                    onChange={(e) => setImgLink(e.target.files[0])}
                     required
                   />
                 </div>
