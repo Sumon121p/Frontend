@@ -59,27 +59,37 @@ export default function Navbar() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link" aria-current="page" href="#">
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
                 <Link className="nav-link" to="/">
-                  All Listing
+                  Explore
                 </Link>
               </li>
+            </ul>
+
+            <div className="ms-auto">
+              <form className="d-flex" role="search">
+                <input
+                  className="form-control me-2 search-input"
+                  type="search"
+                  placeholder="Search destination"
+                  aria-label="Search"
+                />
+                <button className="btn btn-search" type="submit">
+                  <i className="fa-solid fa-magnifying-glass d-inline mx-1"></i>
+                  Search
+                </button>
+              </form>
+            </div>
+
+            <ul className="navbar-nav ms-auto">
               {Authorized ? (
                 <li className="nav-item">
                   <Link className="nav-link" to="/add">
-                    Add new Listing
+                    Airbnb your home
                   </Link>
                 </li>
               ) : (
                 ""
               )}
-            </ul>
-
-            <ul className="navbar-nav ms-auto">
               {Authorized ? (
                 <li className="nav-item">
                   <p
@@ -87,7 +97,7 @@ export default function Navbar() {
                     onClick={unauthorized}
                     style={{ cursor: "pointer" }}
                   >
-                    Log out
+                    <b>Log out</b>
                   </p>
                 </li>
               ) : (
@@ -95,12 +105,12 @@ export default function Navbar() {
                   {" "}
                   <li className="nav-item">
                     <Link className="nav-link" to="/signup">
-                      Sign up
+                      <b>Sign up</b>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/login">
-                      Log in
+                      <b>Log in</b>
                     </Link>
                   </li>
                 </>
