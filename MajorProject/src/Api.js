@@ -2,12 +2,12 @@ import axios from 'axios';
 
 // Create an Axios instance with default configurations
 const api = axios.create({
-    baseURL: "http://localhost:8080/api/List",
+    baseURL: "https://backend-major-project-1.onrender.com/api/List",
     withCredentials: true // This ensures cookies are included in requests
 });
 
 const api2 = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://backend-major-project-1.onrender.com",
     withCredentials: true // This ensures cookies are included in requests
 });
 
